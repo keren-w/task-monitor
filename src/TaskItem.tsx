@@ -1,6 +1,6 @@
  export type TTaskItem<T> =
   | {
-      status: 'Ready' | 'Running';
+      status: 'Waiting' | 'Running';
       title: string;
       id: string;
       action: () => Promise<T>;
@@ -13,7 +13,7 @@
       result?: T;
     }
   | {
-      status: 'Error';
+      status: 'Failed';
       title: string;
       id: string;
       action: () => Promise<T>;
@@ -32,7 +32,8 @@ export const TaskItem = ({
     <tr>
       <td>{task.title}</td>
       <td>{task.status}</td>
-      <td>{task.status === 'Succeeded' && result}</td>
+      <td>---</td>
+      <td>{task.status=== 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error}</td>
     </tr>
   );
 };

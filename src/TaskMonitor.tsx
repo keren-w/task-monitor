@@ -11,12 +11,21 @@ export const TaskMonitor = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [tasks, setTasks] = useState<TTaskItem<string>[]>(
     tasksList.map((task) => ({
-      status: 'Ready',
+      status: 'Waiting',
       id: task.id,
       action: task.action,
       title: task.name,
     }))
   );
+
+  const tasksStatuses = ['Waiting', 'Running', 'Succeeded', 'Failed'];
+  const tasksByStatus = tasksStatuses.reduce((acc, status) => {
+    acc.set(status, tasks.filter((task => task.status === status)))
+    return acc;
+  }, new Map<string, TTaskItem>());
+  const completedTasks = tasksByStatus.get('Succeeded')?.length + tasksByStatus.get('Failed')?.length;
+  const progressPercentage = completedTasks/tasks.length*100;
+  console.log('completedTasks: ', completedTasks);
 
   const handleConcurrencyChange = (e) => {
     const concurrency = e.target.valueAsNumber;
@@ -46,7 +55,7 @@ export const TaskMonitor = () => {
   const onTaskReject = (taskId, err) => {
     setTasks((tasks) =>
       tasks.map((task) =>
-        task.id === taskId ? { ...task, status: 'Error', error: err } : task
+        task.id === taskId ? { ...task, status: 'Failed', error: err } : task
       )
     );
   };
@@ -60,7 +69,7 @@ export const TaskMonitor = () => {
       onTaskResolve,
       onTaskReject
     ).then((tasksResults) => {
-      console.log(tasksResults);
+      console.log('tasksResults: ', tasksResults);
       setIsFirstLoad(false);
       setIsRunning(false);
     });
@@ -80,17 +89,35 @@ export const TaskMonitor = () => {
           min={1}
           max={5}
           onChange={handleConcurrencyChange}
+          disabled={isRunning}
         />
         <button
           className={isRunning && styles['running']}
           onClick={handleRunClick}
+          disabled={isRunning}
         >
           {isRunning ? 'Running...' : isFirstLoad ? 'Run tasks' : 'Run again'}
         </button>
       </div>
+<div className={styles['summary-cards']}>
+{tasksStatuses.map(status => (
+  <div className={styles['card']}>
+<span>{status}</span>
+<span>{tasksByStatus.get(status)?.length}</span>
+  </div>
+))}
+</div>
+<div className={styles['progress-status']}>
+  <span>{completedTasks} of {tasks.length} completed</span>
+  <span>{progressPercentage}%</span>
+  </div>
+<progress id="file" max="100" value={progressPercentage}/>
+
+
       <table>
         <th>Task</th>
         <th>Status</th>
+        <th>Duration</th>
         <th>Output</th>
         <tbody>
           {tasks.map((task) => (
