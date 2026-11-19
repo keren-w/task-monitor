@@ -33,7 +33,7 @@ export const TaskItem = ({
       <td>{task.title}</td>
       <td>{task.status}</td>
       <td>---</td>
-      <td>{task.status=== 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error}</td>
+      <td>{task.status=== 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error.message}</td>
     </tr>
   );
 };
