@@ -10,7 +10,7 @@ export async function runTasks<T>(
   onTaskProgress: (taskIndex: string) => void,
   onTaskResolve: (taskIndex: string, res: T) => void,
   onTaskReject: (taskIndex: string, rej: unknown) => void
-): Promise<void> {
+): Promise<TaskResponse<T>[]> {
   const results: TaskResponse<T>[] = new Array(tasks.length);
   let nextTaskIndex = 0;
 
@@ -36,4 +36,5 @@ export async function runTasks<T>(
   };
 
   await Promise.all(new Array(concurrency).fill(0).map(() => runTask()));
+  return results;
 }

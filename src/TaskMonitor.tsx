@@ -18,6 +18,8 @@ export const TaskMonitor = () => {
     }))
   );
 
+  const [jobStatus, setJobStatus] = useState('Ready'); 
+
   const tasksStatuses = ['Waiting', 'Running', 'Succeeded', 'Failed'];
   const tasksByStatus = tasksStatuses.reduce((acc, status) => {
     acc.set(status, tasks.filter((task => task.status === status)))
@@ -25,7 +27,6 @@ export const TaskMonitor = () => {
   }, new Map<string, TTaskItem>());
   const completedTasks = tasksByStatus.get('Succeeded')?.length + tasksByStatus.get('Failed')?.length;
   const progressPercentage = completedTasks/tasks.length*100;
-  console.log('completedTasks: ', completedTasks);
 
   const handleConcurrencyChange = (e) => {
     const concurrency = e.target.valueAsNumber;
@@ -61,6 +62,7 @@ export const TaskMonitor = () => {
   };
 
   const handleRunClick = () => {
+    setJobStatus('Running');
     setIsRunning(true);
     runTasks(
       tasks,
@@ -69,17 +71,31 @@ export const TaskMonitor = () => {
       onTaskResolve,
       onTaskReject
     ).then((tasksResults) => {
-      console.log('tasksResults: ', tasksResults);
+      const jobStatus = Object.values(tasksResults).every(res => res.success);
+      console.log('tasksResults: ', jobStatus);
+      setJobStatus(jobStatus ? 'Completed' : 'Error');
       setIsFirstLoad(false);
       setIsRunning(false);
     });
   };
 
+  const getJobStatusTitle = () => {
+    switch (jobStatus) {
+      case 'Error':
+        return 'Completed with errors';
+        default:
+          return jobStatus
+    }
+  }
+
   return (
     <div className={styles['view-wrapper']}>
       <div className={styles['section-title']}>
-        <h1>Task Monitor</h1>
-        <h5>Track every task, from start to finish.</h5>
+        <div className={styles.titles}><h1>Task Monitor</h1>
+        <h5>Track every task, from start to finish.</h5></div>
+        <div className={styles.job-status}>
+          {getJobStatusTitle()}
+        </div>
       </div>
       <div className={styles['actions']}>
         Concurrency:{' '}

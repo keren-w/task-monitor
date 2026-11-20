@@ -3,6 +3,8 @@
 }
 
 .section-title {
+  display: flex;
+  justify-content: space-between;
   color: black;
   h1 {
     font-size: 1.7rem;
