@@ -18,7 +18,7 @@ export const TaskMonitor = () => {
     }))
   );
 
-  const [jobStatus, setJobStatus] = useState('Ready'); 
+  const [jobStatus, setJobStatus] = useState<'Ready' | 'Running' | 'Completed' | 'Error'>('Ready');
 
   const tasksStatuses = ['Waiting', 'Running', 'Succeeded', 'Failed'];
   const tasksByStatus = tasksStatuses.reduce((acc, status) => {
@@ -26,7 +26,7 @@ export const TaskMonitor = () => {
     return acc;
   }, new Map<string, TTaskItem>());
   const completedTasks = tasksByStatus.get('Succeeded')?.length + tasksByStatus.get('Failed')?.length;
-  const progressPercentage = completedTasks/tasks.length*100;
+  const progressPercentage = completedTasks / tasks.length * 100;
 
   const handleConcurrencyChange = (e) => {
     const concurrency = e.target.valueAsNumber;
@@ -79,23 +79,52 @@ export const TaskMonitor = () => {
     });
   };
 
-  const getJobStatusTitle = () => {
-    switch (jobStatus) {
-      case 'Error':
-        return 'Completed with errors';
+
+  const getJobStatusChip = (jobStatus: typeof jobStatus) => {
+    const chipStatusValues = {
+      Ready: {
+        text: jobStatus,
+        backgroundColor: '#dddddd',
+        color: 'gray'
+      },
+      Running: {
+        text: jobStatus,
+        backgroundColor: '#d5e5f9',
+        color: 'yellow',
+      },
+      Completed: {
+        text: jobStatus,
+        backgroundColor: '#c6facf',
+        color: 'blue'
+      },
+      Error: {
+        text: 'Completed with errors',
+        backgroundColor: '#fdf2cd',
+        color: 'green'
+      }
+    }
+    const chipColor = 'red';
+    const getJobStatusTitle = () => {
+      switch (jobStatus) {
+        case 'Error':
+          return 'Completed with errors';
         default:
           return jobStatus
+      }
     }
+    return <div className={styles['job-status']} style={{ backgroundColor: chipStatusValues[jobStatus]?.backgroundColor }}>
+      {chipStatusValues[jobStatus]?.text}
+    </div>
   }
+
+
 
   return (
     <div className={styles['view-wrapper']}>
       <div className={styles['section-title']}>
         <div className={styles.titles}><h1>Task Monitor</h1>
-        <h5>Track every task, from start to finish.</h5></div>
-        <div className={styles.job-status}>
-          {getJobStatusTitle()}
-        </div>
+          <h5>Track every task, from start to finish.</h5></div>
+        {getJobStatusChip(jobStatus)}
       </div>
       <div className={styles['actions']}>
         Concurrency:{' '}
@@ -115,19 +144,19 @@ export const TaskMonitor = () => {
           {isRunning ? 'Running...' : isFirstLoad ? 'Run tasks' : 'Run again'}
         </button>
       </div>
-<div className={styles['summary-cards']}>
-{tasksStatuses.map(status => (
-  <div className={styles['card']}>
-<span>{status}</span>
-<span>{tasksByStatus.get(status)?.length}</span>
-  </div>
-))}
-</div>
-<div className={styles['progress-status']}>
-  <span>{completedTasks} of {tasks.length} completed</span>
-  <span>{progressPercentage}%</span>
-  </div>
-<progress id="file" max="100" value={progressPercentage}/>
+      <div className={styles['summary-cards']}>
+        {tasksStatuses.map(status => (
+          <div className={styles['card']}>
+            <span>{status}</span>
+            <span>{tasksByStatus.get(status)?.length}</span>
+          </div>
+        ))}
+      </div>
+      <div className={styles['progress-status']}>
+        <span>{completedTasks} of {tasks.length} completed</span>
+        <span>{progressPercentage}%</span>
+      </div>
+      <progress id="file" max="100" value={progressPercentage} />
 
 
       <table>
