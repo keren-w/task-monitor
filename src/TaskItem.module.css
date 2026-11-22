@@ -1,0 +1,24 @@
+.expand {
+    background-color: unset;
+    border: none;
+    color: var(--active-blue);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .expanded {
+    padding: 0 0.8rem;
+    td>div {
+        background-color: var(--light-red);
+        border-radius: var(--border-radius);
+        padding: 5px var(--padding);
+        display: flex;
+        flex-direction: column;
+        line-height: 22px;
+    }
+  }
+
+  .error-details {
+    color: #881010;
+    font-weight: 600;
+  }

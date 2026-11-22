@@ -161,6 +161,7 @@ export const TaskMonitor = () => {
             <th>Status</th>
             <th>Duration</th>
             <th>Output</th>
+            <th>{' '}</th>
           </tr></thead>
           <tbody>
             {tasks.map((task) => (

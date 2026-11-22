@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styles from './TaskItem.module.css';
 export type TTaskItem<T> =
   {
     status: 'Waiting' | 'Running';
@@ -33,6 +34,7 @@ export const TaskItem = ({
 }) => {
   const { status, title, error, result } = task;
   const [duration, setDuration] = useState<undefined | Number>(undefined);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -50,13 +52,24 @@ export const TaskItem = ({
 
 
   }, [status]);
-  const durationInSeconds = duration > 0 ? duration/10 : 0; 
+  const durationInSeconds = duration > 0 ? duration / 10 : 0;
   return (
-    <tr>
-      <td>{title}</td>
-      <td>{status}</td>
-      <td>{(duration || duration === 0) ? `${durationInSeconds}s` : '---'}</td>
-      <td>{status === 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error.message}</td>
-    </tr>
+    <>
+      <tr>
+        <td>{title}</td>
+        <td>{status}</td>
+        <td>{(duration || duration === 0) ? `${durationInSeconds}s` : '---'}</td>
+        <td>{status === 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error.message}</td>
+        <td>{status === 'Failed' && <button className={styles['expand']} onClick={() => setIsExpanded((isExpanded => !isExpanded))}>{isExpanded ? 'Hide details' : 'Show details'}</button>}</td>
+
+      </tr>
+      {isExpanded && <tr className={styles['expanded']}>
+        <td colspan={5}>
+          <div>
+            <span className={styles['error-details']}>Error details</span>
+            <span>{error.message}</span>
+          </div>
+        </td>
+      </tr>}</>
   );
 };
