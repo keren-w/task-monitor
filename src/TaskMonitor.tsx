@@ -73,7 +73,6 @@ export const TaskMonitor = () => {
     ).then((tasksResults) => {
       const jobStatus = Object.values(tasksResults).every(res => res.success);
       console.log('tasksResults: ', jobStatus);
-      setJobStatus(jobStatus ? 'Completed' : 'Error');
       setIsFirstLoad(false);
       setIsRunning(false);
     });
@@ -157,19 +156,21 @@ export const TaskMonitor = () => {
         <span>{progressPercentage}%</span>
       </div>
       <progress id="file" max="100" value={progressPercentage} />
-
-
+      <div className={styles['table-wrapper']}>
       <table>
-        <th>Task</th>
-        <th>Status</th>
-        <th>Duration</th>
-        <th>Output</th>
+        <thead><tr>
+          <th>Task</th>
+          <th>Status</th>
+          <th>Duration</th>
+          <th>Output</th>
+        </tr></thead>
         <tbody>
           {tasks.map((task) => (
             <TaskItem key={task.id} task={task} />
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
