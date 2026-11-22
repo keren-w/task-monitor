@@ -50,7 +50,7 @@ export const TaskItem = ({
 
 
   }, [status]);
-  const durationInSeconds = duration > 0 ? duration/10 : 0;
+  const durationInSeconds = duration > 0 ? duration/10 : 0; 
   return (
     <tr>
       <td>{title}</td>
