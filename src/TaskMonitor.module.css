@@ -9,7 +9,7 @@
   h1 {
     color: black;
     font-size: 1.7rem;
-    font-weight: bold;
+    font-weight: 700;
     margin: 0 0 0.1rem;
   }
 
@@ -86,7 +86,7 @@ progress {
   height: fit-content;
   white-space: nowrap;
   font-size: 0.8rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .table-wrapper {
