@@ -106,11 +106,30 @@ progress {
     thead {
       background-color: rgb(222, 222, 222);
       border-bottom: 1px solid rgb(190, 190, 190);
+
+      th {
+        text-align: start;
+        padding: 0 .8rem;
+      }
     }
   }
-  td, th {
-    padding: 0.8rem;
+
+  td,
+  th {
+    padding: 5px;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  tr>td:first-child {
+    padding-left: .8rem;
+  }
+
+  tr>td:last-child {
+    padding-right: .8rem;
+  }
+
+  tr:last-child>td {
+    padding-bottom: .8rem;
   }
 }
