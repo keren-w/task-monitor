@@ -116,8 +116,6 @@ export const TaskMonitor = () => {
     </div>
   }
 
-
-
   return (
     <div className={styles['view-wrapper']}>
       <div className={styles['section-title']}>
