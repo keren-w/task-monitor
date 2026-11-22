@@ -109,7 +109,9 @@ progress {
 
       th {
         text-align: start;
-        padding: 0 .8rem;
+        :first-child {
+          padding-left: 0.8rem;
+        }
       }
     }
   }

@@ -1,16 +1,10 @@
+import { useState, useEffect } from 'react';
 export type TTaskItem<T> =
   {
-    status: 'Waiting';
+    status: 'Waiting' | 'Running';
     title: string;
     id: string;
     action: () => Promise<T>;
-  }
-  | {
-    status: 'Running';
-    title: string;
-    id: string;
-    action: () => Promise<T>;
-    duration: number;
   }
   | {
     status: 'Succeeded';
@@ -29,20 +23,40 @@ export type TTaskItem<T> =
     duration: number;
   };
 
+const durationFormatter = new Intl.DurationFormat('en', { style: 'narrow' });
+
 export const TaskItem = ({
   task,
 }: {
   key: string;
   task: TTaskItem<string>;
 }) => {
-  const { error, result } = task;
+  const { status, title, error, result } = task;
+  const [duration, setDuration] = useState<undefined | Number>(undefined);
 
+  useEffect(() => {
+    let interval;
+    let duration;
+    if (status === 'Running') {
+      duration = 0;
+      setDuration(duration);
+      interval = setInterval(() => {
+        setDuration(++duration)
+      }, 100);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+
+
+  }, [status]);
+  const durationInSeconds = duration > 0 ? duration/10 : 0;
   return (
     <tr>
-      <td>{task.title}</td>
-      <td>{task.status}</td>
-      <td>{task.duration || '---'}</td>
-      <td>{task.status === 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error.message}</td>
+      <td>{title}</td>
+      <td>{status}</td>
+      <td>{(duration || duration === 0) ? `${durationInSeconds}s` : '---'}</td>
+      <td>{status === 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error.message}</td>
     </tr>
   );
 };

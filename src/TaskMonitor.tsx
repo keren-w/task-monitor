@@ -143,7 +143,7 @@ export const TaskMonitor = () => {
       </div>
       <div className={styles['summary-cards']}>
         {tasksStatuses.map(status => (
-          <div className={styles['card']}>
+          <div key={status} className={styles['card']}>
             <span>{status}</span>
             <span>{tasksByStatus.get(status)?.length}</span>
           </div>
@@ -155,19 +155,19 @@ export const TaskMonitor = () => {
       </div>
       <progress id="file" max="100" value={progressPercentage} />
       <div className={styles['table-wrapper']}>
-      <table>
-        <thead><tr>
-          <th>Task</th>
-          <th>Status</th>
-          <th>Duration</th>
-          <th>Output</th>
-        </tr></thead>
-        <tbody>
-          {tasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
-          ))}
-        </tbody>
-      </table>
+        <table>
+          <thead><tr>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Duration</th>
+            <th>Output</th>
+          </tr></thead>
+          <tbody>
+            {tasks.map((task) => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

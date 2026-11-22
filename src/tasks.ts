@@ -7,7 +7,7 @@ const importCustomers = () =>
 
 const syncInventory = () =>
   new Promise<string>((resolve) => {
-    setTimeout(() => resolve('128 items synced'), 100);
+    setTimeout(() => resolve('128 items synced'), 1200);
   });
 
 const generateReport = () =>
