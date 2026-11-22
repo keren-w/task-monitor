@@ -1,0 +1,7 @@
+.chip-wrapper {
+    padding: 5px;
+    border-radius: 8px;
+    height: fit-content;
+    white-space: nowrap;
+    font-weight: 700;
+  }

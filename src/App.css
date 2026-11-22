@@ -3,10 +3,14 @@
   --dark-gray: rgb(85, 84, 84);
   --light-gray: rgb(190, 190, 190);
   --background-light-gray: rgb(222, 222, 222);
-  --light-yellow: hsl(213, 75%, 91%);
-  --light-green: #fdf2cd;
-  --light-blue: #c6facf;
+  --light-yellow: #fdf2cd;
+  --light-green: #c6facf;
+  --light-blue: hsl(213, 75%, 91%);
   --light-red: #fed3d3ee;
+  --dark-red: #881010;
+  --dark-blue: var(--active-blue);
+  --dark-yellow: #85690c;
+  --dark-green: #077e1c;
   --border-radius: 8px;
   --padding: 0.8rem;
   --spacing-md: 16px;

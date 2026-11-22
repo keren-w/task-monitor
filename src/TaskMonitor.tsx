@@ -4,6 +4,7 @@ import styles from './TaskMonitor.module.css';
 import { tasksList } from './tasks.ts';
 import type { TTaskItem } from './TaskItem.tsx';
 import { TaskItem } from './TaskItem.tsx';
+import { Chip } from'./components/Chip.tsx';
 
 export const TaskMonitor = () => {
   const [concurrency, setConcurrency] = useState(2);
@@ -72,7 +73,7 @@ export const TaskMonitor = () => {
       onTaskReject
     ).then((tasksResults) => {
       const jobStatus = Object.values(tasksResults).every(res => res.success);
-      console.log('tasksResults: ', jobStatus);
+      setJobStatus(jobStatus ? 'Completed' : 'Error');
       setIsFirstLoad(false);
       setIsRunning(false);
     });
@@ -82,24 +83,16 @@ export const TaskMonitor = () => {
   const getJobStatusChip = (jobStatus: typeof jobStatus) => {
     const chipStatusValues = {
       Ready: {
-        text: jobStatus,
-        backgroundColor: '#dddddd',
-        color: 'gray'
+        chipStatus: 'Idle',
       },
       Running: {
-        text: jobStatus,
-        backgroundColor: '#d5e5f9',
-        color: 'yellow',
+        chipStatus: 'Running',
       },
       Completed: {
-        text: jobStatus,
-        backgroundColor: '#c6facf',
-        color: 'blue'
+        chipStatus: 'Success',
       },
       Error: {
-        text: 'Completed with errors',
-        backgroundColor: '#fdf2cd',
-        color: 'green'
+        chipStatus: 'Partial',
       }
     }
     const chipColor = 'red';
@@ -111,9 +104,7 @@ export const TaskMonitor = () => {
           return jobStatus
       }
     }
-    return <div className={styles['job-status']} style={{ backgroundColor: chipStatusValues[jobStatus]?.backgroundColor }}>
-      {chipStatusValues[jobStatus]?.text}
-    </div>
+    return <Chip status={chipStatusValues[jobStatus]?.chipStatus} text={getJobStatusTitle()} />
   }
 
   return (
@@ -161,7 +152,7 @@ export const TaskMonitor = () => {
             <th>Status</th>
             <th>Duration</th>
             <th>Output</th>
-            <th>{' '}</th>
+            <th></th>
           </tr></thead>
           <tbody>
             {tasks.map((task) => (
