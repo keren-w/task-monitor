@@ -11,7 +11,7 @@
   --dark-blue: var(--active-blue);
   --dark-yellow: #85690c;
   --dark-green: #077e1c;
-  --border-radius: 8px;
+  --border-radius: 12px;
   --padding: 0.8rem;
   --spacing-md: 16px;
 }

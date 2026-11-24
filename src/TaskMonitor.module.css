@@ -35,7 +35,7 @@
 
   button {
     padding: 5px 1rem 5px calc(1rem - 4px);
-    border-radius: 8px;
+    border-radius: 6px;
     background: var(--active-blue);
     color: white;
     border: none;

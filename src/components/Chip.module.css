@@ -3,6 +3,6 @@
     height: fit-content;
     width: fit-content;
     padding: 5px 1rem;
-    border-radius: 1rem;
+    border-radius: var(--border-radius);
     font-size: .95rem;
   }
