@@ -31,7 +31,10 @@ export const Chip = ({ status, text }: IChip) => {
     console.log('status: ', status);
     console.log('chipStatusValues[status]: ', chipStatusValues[status]);
 
-    const { backgroundColor, color } = status && chipStatusValues[status];
+    // if (!status) {
+    //     return;
+    // }
+    const { backgroundColor, color } = status ? chipStatusValues[status] : chipStatusValues['Idle'];
     return (
         <div className={styles['chip-wrapper']} style={{ backgroundColor, color }}>
             {text}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './TaskItem.module.css';
+import { Chip } from'./components/Chip.tsx';
 export type TTaskItem<T> =
   {
     status: 'Waiting' | 'Running';
@@ -35,7 +36,20 @@ export const TaskItem = ({
   const { status, title, error, result } = task;
   const [duration, setDuration] = useState<undefined | Number>(undefined);
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const chipStatusValues = {
+    Waiting: {
+      chipStatus: 'Idle',
+    },
+    Running: {
+      chipStatus: 'Running',
+    },
+    Succeeded: {
+      chipStatus: 'Success',
+    },
+    Failed: {
+      chipStatus: 'Error',
+    }
+  }
   useEffect(() => {
     let interval;
     let duration;
@@ -57,7 +71,7 @@ export const TaskItem = ({
     <>
       <tr>
         <td>{title}</td>
-        <td>{status}</td>
+        <td> <Chip status={chipStatusValues[status]?.chipStatus} text={status} /></td>
         <td>{(duration || duration === 0) ? `${durationInSeconds}s` : '---'}</td>
         <td>{status === 'Running' && 'Processing...' || task.status === 'Succeeded' && result || task.status === 'Failed' && error.message}</td>
         <td>{status === 'Failed' && <button className={styles['expand']} onClick={() => setIsExpanded((isExpanded => !isExpanded))}>{isExpanded ? 'Hide details' : 'Show details'}</button>}</td>

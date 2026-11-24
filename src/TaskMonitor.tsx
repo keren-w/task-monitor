@@ -95,7 +95,6 @@ export const TaskMonitor = () => {
         chipStatus: 'Partial',
       }
     }
-    const chipColor = 'red';
     const getJobStatusTitle = () => {
       switch (jobStatus) {
         case 'Error':
